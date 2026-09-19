@@ -1,3 +1,3 @@
-function TestTs () {
-    return {};
-}
+function TestTs() {
+    return {}
+};
