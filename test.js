@@ -1,0 +1,3 @@
+function TestTs () {
+    return {};
+}
