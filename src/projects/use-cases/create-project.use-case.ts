@@ -1,24 +1,22 @@
-import { InjectRepository } from "@nestjs/typeorm";
 import { CreateProjectDto } from "../dto/create-project.dto.js";
-import { Project, projectStatus } from "../entities/project.entity.js";
-import { Repository } from "typeorm";
-import { Injectable } from "@nestjs/common";
+import { Project } from "../entities/project.entity.js";
+import { Inject, Injectable } from "@nestjs/common";
+import type { IProjectrepository } from "../project.repository.js";
+
+
 //Um use case representa a intenção de um usuario
 @Injectable()
 export class CreateProjectUseCase {
 
     constructor(
-        @InjectRepository(Project)
-        private projectRepo: Repository<Project>) { }
+        @Inject('IProjectrepository')
+        private readonly projectRepo: IProjectrepository,
+    ) { }
 
-    execute(input: CreateProjectDto) {
+    async execute(input: CreateProjectDto) {
         const project = new Project(input)
-
-        if (input.started_at) {
-            project.status = projectStatus.Active
-        }
-
-        return this.projectRepo.save(project);
+        await this.projectRepo.create(project);
+        return project;
     }
 
 }

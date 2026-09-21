@@ -1,20 +1,16 @@
-import { InjectRepository } from "@nestjs/typeorm";
-import { CreateProjectDto } from "../dto/create-project.dto.js";
-import { Project, projectStatus } from "../entities/project.entity.js";
-import { Repository } from "typeorm";
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
+import type { IProjectrepository } from "../project.repository.js";
 
 @Injectable()
 export class FindOneProjectUseCase {
 
     constructor(
-        @InjectRepository(Project)
-        private projectRepo: Repository<Project>) { }
+        @Inject('IProjectrepository')
+        private readonly projectRepo: IProjectrepository,
+    ) { }
 
-    execute(input: CreateProjectDto) {
-        return this.projectRepo.findOneOrFail({
-            // where: { id: input.id },
-        });
+    execute(input: string) {
+        return this.projectRepo.findById(input)
     }
 
 }
