@@ -1,118 +1,119 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Clean Node API - NestJS & Clean Architecture
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este projeto é uma API REST desenvolvida com **NestJS**, focando na aplicação prática dos princípios de **Clean Architecture** (Arquitetura Limpa) e **DDD** (Domain-Driven Design), baseada na aula *"Construindo aplicações com Nest.js e Clean Architecture"* da Full Cycle.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+O objetivo principal é manter as regras de negócio totalmente isoladas de frameworks, bibliotecas ou detalhes de infraestrutura (como banco de dados ou ORM), garantindo uma aplicação altamente testável, manutenível e desacoplada.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🛠️ Tecnologias e Ferramentas
 
-## Project setup
+- **Node.js** (v18+)
+- **TypeScript**
+- **NestJS** (Framework HTTP e Injeção de Dependência)
+- **TypeORM** (Persistência e Mapeamento de Entidades)
+- **SQLite / Better-SQLite3** (Banco de dados relacional)
+- **Class-Validator / Class-Transformer** (Validação de DTOs)
+- **Jest** (Testes unitários e de integração)
 
-```bash
-$ npm install
+---
+
+## 🏛️ Arquitetura do Projeto
+
+A estrutura de pastas e módulos segue a divisão em camadas conceituada por Robert C. Martin (Uncle Bob):
+
+```text
+src/
+├── domain/             # [Camada de Domínio]
+│   ├── entities/       # Regras de negócio e entidades puras do sistema
+│   └── repositories/   # Interfaces/Contratos dos repositórios
+├── use-cases/          # [Camada de Casos de Uso / Aplicação]
+│   └── project/        # Fluxos de aplicação (ex: CreateProjectUseCase)
+├── infrastructure/     # [Camada de Infraestrutura]
+│   ├── database/       # Implementação do TypeORM, mappers e ORM entities
+│   └── http/           # Controllers do NestJS, DTOs e Pipes
+└── main.ts             # Ponto de entrada da aplicação
 ```
 
-## Compile and run the project
+### Regras Principais de Dependência
+1. O **Domínio** não depende de nada além de TypeScript puro.
+2. Os **Casos de Uso** dependem apenas das interfaces definidas no Domínio.
+3. A **Infraestrutura** (NestJS, TypeORM) implementa as interfaces e gerencia os detalhes externos.
+
+---
+
+## 🚀 Como Executar o Projeto
+
+### Pré-requisitos
+- **Node.js** instalado (versão 18 ou superior)
+- **NPM** ou **Yarn**
+
+### Passos para instalação
+
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/seu-usuario/clean-node-api.git
+   cd clean-node-api
+   ```
+
+2. **Instale as dependências:**
+   ```bash
+   npm install
+   ```
+
+3. **Inicie a aplicação em modo de desenvolvimento:**
+   ```bash
+   npm run start:dev
+   ```
+
+A aplicação estará rodando em: `http://localhost:3000`
+
+---
+
+## 📌 Endpoints da API
+
+### Criar Projeto
+- **URL:** `/projects`
+- **Método:** `POST`
+- **Body (JSON):**
+  ```json
+  {
+    "name": "Projeto Exemplo",
+    "description": "Descrição detalhada do projeto"
+  }
+  ```
+- **Resposta Sucesso (`201 Created`):**
+  ```json
+  {
+    "id": "1c15c41e-c1ab-43bd-965d-fe6558c94274",
+    "name": "Projeto Exemplo",
+    "description": "Descrição detalhada do projeto",
+    "status": "active",
+    "created_at": "2026-09-20T20:41:24.000Z"
+  }
+  ```
+
+---
+
+## 🧪 Executando Testes
+
+Para rodar a suíte de testes da aplicação:
 
 ```bash
-# development
-$ npm run start
+# Testes unitários
+npm run test
 
-# watch mode
-$ npm run start:dev
+# Testes e2e (ponta a ponta)
+npm run test:e2e
 
-# production mode
-$ npm run start:prod
+# Cobertura de testes
+npm run test:cov
 ```
 
-## Run tests
+---
 
-```bash
-# unit tests
-$ npm run test
+## 👨‍💻 Referências
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Observability
-
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
-
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
-
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
-
-This project is already instrumented. Create a free account at [observe.nestjs.com](https://observe.nestjs.com), add an application, and paste the generated app key and secret into the `ObserveModule.forRoot()` call in `src/app.module.ts`.
-
-The free plan needs no payment details and covers 300,000 events a month. You can also browse the [live demo](https://www.observe-demo.nestjs.com/dashboard) first - the whole dashboard over a busy service's data, with nothing to install.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observe](https://observe.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- Aula original: [Construindo aplicações com Nest.js e Clean Architecture (Full Cycle)](https://www.youtube.com/watch?v=CpBqpsINims)
+- Documentação oficial do [NestJS](https://docs.nestjs.com/)
+- Documentação oficial do [TypeORM](https://typeorm.io/)
