@@ -2,7 +2,7 @@
 
 Este projeto é uma API REST desenvolvida com **NestJS**, focando na aplicação prática dos princípios de **Clean Architecture** (Arquitetura Limpa) e **DDD** (Domain-Driven Design), baseada na aula *"Construindo aplicações com Nest.js e Clean Architecture"* da Full Cycle.
 
-O objetivo principal é manter as regras de negócio totalmente isoladas de frameworks, bibliotecas ou detalhes de infraestrutura (como banco de dados ou ORM), garantindo uma aplicação altamente testável, manutenível e desacoplada.
+O objetivo principal é manter as regras de negócio totalmente isoladas de frameworks, bibliotecas ou detalhes de infraestrutura (como banco de dados ou ORM), garantindo uma aplicação highly testável, manutenível e desacoplada.
 
 ---
 
@@ -14,31 +14,35 @@ O objetivo principal é manter as regras de negócio totalmente isoladas de fram
 - **TypeORM** (Persistência e Mapeamento de Entidades)
 - **SQLite / Better-SQLite3** (Banco de dados relacional)
 - **Class-Validator / Class-Transformer** (Validação de DTOs)
-- **Jest** (Testes unitários e de integração)
 
 ---
 
 ## 🏛️ Arquitetura do Projeto
 
-A estrutura de pastas e módulos segue a divisão em camadas conceituada por Robert C. Martin (Uncle Bob):
+A estrutura do módulo de projetos organiza suas entidades, DTOs, casos de uso, contratos de repositório e controllers de forma clara e modular:
 
 ```text
-src/
-├── domain/             # [Camada de Domínio]
-│   ├── entities/       # Regras de negócio e entidades puras do sistema
-│   └── repositories/   # Interfaces/Contratos dos repositórios
-├── use-cases/          # [Camada de Casos de Uso / Aplicação]
-│   └── project/        # Fluxos de aplicação (ex: CreateProjectUseCase)
-├── infrastructure/     # [Camada de Infraestrutura]
-│   ├── database/       # Implementação do TypeORM, mappers e ORM entities
-│   └── http/           # Controllers do NestJS, DTOs e Pipes
-└── main.ts             # Ponto de entrada da aplicação
+projects/
+├── dto/
+│   ├── create-project.dto.ts
+│   ├── start-project.dto copy.ts
+│   └── update-project.dto.ts
+├── entities/
+│   └── project.entity.ts
+├── use-cases/
+│   ├── create-project.use-case.ts
+│   ├── find-all-project.use-case.ts
+│   ├── find-one-project.use-case.ts
+│   └── start-project-use-case.ts
+├── project.repository.ts
+├── projects-whit-use-case.controller.ts
+└── projects.module.ts
 ```
 
 ### Regras Principais de Dependência
-1. O **Domínio** não depende de nada além de TypeScript puro.
-2. Os **Casos de Uso** dependem apenas das interfaces definidas no Domínio.
-3. A **Infraestrutura** (NestJS, TypeORM) implementa as interfaces e gerencia os detalhes externos.
+1. O **Domínio** (entidades e repositórios) não depende de nada além de TypeScript puro.
+2. Os **Casos de Uso** dependem apenas das interfaces/contratos definidos no repositório.
+3. O **Controller** delega a execução para os casos de uso correspondentes, utilizando os DTOs para validação de entrada.
 
 ---
 
