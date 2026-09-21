@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from 
 import { ProjectsService } from './projects.service.js';
 import { CreateProjectDto } from './dto/create-project.dto.js';
 import { UpdateProjectDto } from './dto/update-project.dto.js';
-
+// não tem regra de negocio
 @Controller('projects')
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) { }
