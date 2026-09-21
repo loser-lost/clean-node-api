@@ -1,4 +1,21 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateProjectDto } from './create-project.dto.js';
 
-export class UpdateProjectDto extends PartialType(CreateProjectDto) {}
+
+class _UpdateProjectDto {
+    name: string;
+
+    description: string;
+
+    started_at: Date | null;
+
+    forescated_at: Date | null;
+
+    cancelled_at: Date | null;
+
+    finished_at: Date | null;
+}
+export class UpdateProjectDto extends PartialType(_UpdateProjectDto) {
+
+
+
+}
